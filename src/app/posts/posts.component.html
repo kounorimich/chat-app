@@ -1,0 +1,22 @@
+<h1>メッセージ一覧</h1>
+
+<ul class="posts">
+  <div *ngIf="posts">
+  <li *ngFor="let post of posts">
+    <div class="right_balloon">
+      {{ post.body }}
+      <button routerLink="/edit/{{ post.id }}">EDIT</button>
+    </div>
+  </li>
+  </div>
+  <div *ngIf="!posts">
+   No message yet.
+  </div>
+</ul>
+<div class='right_balloon comment new_line'>
+  <label>
+    <input #postBody placeholder="Write your message here" />
+  </label>
+  <button (click)="submit(postBody.value); postBody.value=''">SUBMIT</button>
+</div>
+

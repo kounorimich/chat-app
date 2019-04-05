@@ -1,0 +1,13 @@
+<!--<div *ngIf="post">-->
+  <h2>Edit Message</h2>
+  <p>id: {{ post.id}}
+    <br>
+    <input [(ngModel)]="post.body" placeholder="Write new message here"></p>
+  <button (click)="save()">save</button>
+  <button (click)="delete(post); goBack()">delete</button>
+  <br>
+  <br>
+
+<!--</div>-->
+<button (click)="goBack()">back</button>
+
