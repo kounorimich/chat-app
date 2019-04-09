@@ -5,3 +5,7 @@
 .posts li {
   cursor: pointer;
 }
+
+.main-content {
+  padding: 40px;
+}

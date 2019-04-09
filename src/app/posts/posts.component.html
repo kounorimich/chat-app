@@ -1,22 +1,57 @@
-<h1>メッセージ一覧</h1>
-
-<ul class="posts">
-  <div *ngIf="posts">
-  <li *ngFor="let post of posts">
-    <div class="right_balloon">
-      {{ post.body }}
-      <button routerLink="/edit/{{ post.id }}">EDIT</button>
-    </div>
-  </li>
+<div *ngIf="!posts">
+  No message yet.
+</div>
+<div *ngIf="posts">
+  <div class="posted-messages">
+    <ul class="posts" style="padding-top: 10px">
+      <button (click)="selectAll()">Select All</button>
+      <button (click)="deleteSelected()">Delete Selected Message</button>
+      <br><br>
+      <li *ngFor="let post of posts">
+        <div class="each-message well">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="post.selected">
+            </label>
+          </div>
+          <div class="each-message-body text-left">
+            {{ post.body }}
+          </div>
+          <div class="">
+            <button class="btn btn-group" routerLink="/edit/{{ post.id }}">EDIT</button>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
-  <div *ngIf="!posts">
-   No message yet.
-  </div>
-</ul>
-<div class='right_balloon comment new_line'>
-  <label>
+</div>
+<div class=''>
+  <!-- <label>
     <input #postBody placeholder="Write your message here" />
   </label>
-  <button (click)="submit(postBody.value); postBody.value=''">SUBMIT</button>
+  <button (click)="submit(postBody.value); postBody.value=''; " class="btn btn-primary">SUBMIT</button>
+</div> -->
 </div>
+<div class="navbar-fixed-bottom text-center" style="padding-bottom: 150px">
+  <button type="button" class="btn-lg btn-primary" (click)="staticModal.show()">New Message</button>
+</div>
+
+<!-- モーダルコンポーネントを囲む要素に Modal Directive を指定する -->
+<div bsModal #staticModal="bs-modal"
+     [config]="{backdrop: 'static'}"
+     class="modal"
+     tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <!-- モーダルコンポーネントには Modal Directive を渡しておき、モーダルを閉じた時に親コンポーネント側でイベントを発火させる -->
+  <app-modal [modal]="staticModal" (close)="onResult($event); submit(result)"></app-modal>
+</div>
+
+<div *ngFor="let post of posts">
+  {{post.id}}-------------  {{ post.body }} ------------------ selectedプロパティの値 : {{ post.selected }}
+</div>
+<div *ngFor="let post of posts">
+  {{ post | json}}
+</div>
+
+
+
 
