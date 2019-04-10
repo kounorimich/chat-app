@@ -7,9 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'chat-app';
-  posts: any = {
-    id: 11,
-    body: 'json書き出しテスト',
-    selected: false
-  };
 }

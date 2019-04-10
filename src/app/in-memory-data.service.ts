@@ -8,10 +8,10 @@ import {Post} from './post';
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const posts = [
-      {id: 11, body: 'this is the first post!', selected: false},
-      {id: 12, body: 'this is the second post!', selected: false},
-      {id: 13, body: '3rd message', selected: false},
-      {id: 14, body: 'added message', selected: false},
+      // {id: 11, body: 'this is the first post!', selected: false},
+      // {id: 12, body: 'this is the second post!', selected: false},
+      // {id: 13, body: '3rd message', selected: false},
+      // {id: 14, body: 'added message', selected: false},
     ];
     return {posts};
   }

@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
+import {BsModalService, BsModalRef} from 'ngx-bootstrap';
 
 
 /** モーダルコンポーネント */
@@ -9,6 +10,9 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class ModalComponent {
   /** モーダルディレクティブを保持する */
+  modalRef: BsModalRef;
+  constructor(private modalService: BsModalService) {}
+
   @Input()
   modal: any;
 
@@ -18,6 +22,10 @@ export class ModalComponent {
 
   /** 入力値を保持しておくプロパティ */
   text = '';
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
 
   /** OK ボタン押下時は (close) イベントを発火させつつモーダルを閉じる */
   onOk(): void {

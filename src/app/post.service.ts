@@ -36,6 +36,7 @@ export class PostService {
 
   submitPost(post: Post): Observable<Post> {
     return this.http.post<Post>(this.postsUrl, post, httpOptions);
+    // this.saveToLocalStorage();
   }
 
   deletePost(post: Post | number): Observable<Post> {
@@ -43,8 +44,11 @@ export class PostService {
     const url = `${this.postsUrl}/${id}`;
     return this.http.delete<Post>(url, httpOptions);
   }
-
-  writeToJson(): void {
+  // saveToLocalStorage(id: number, value: string): void {
+  //   localStorage.setItem(id as unknown as string, 'これはlocalStorageに保存したメッセージです！');
+  // }
+  saveToLocalStorage(): void {
+    localStorage.setItem('testKey', 'testValue');
   }
 }
 

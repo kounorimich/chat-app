@@ -4,23 +4,11 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-
-      <!-- この下の行に mr-auto クラスを付与するだけ -->
-      <ul class="navbar-nav mr-auto">　
-        <li class="nav-item">
-          <a class="nav-link" href="search">Search</a>
-        </li>
-
-      </ul>
-
-
-    </div>
   </div>
 </nav>
 <div class="main-content">
 <router-outlet></router-outlet>
-<div>Auto Focus!!<input type="text" appFocusDirective></div>
+  <!-- <input type="text" appFocusDirective><p>フォーカス設定app.component.htmlに埋め込むと動くが、modal.component.htmlだとダメ</p> -->
 </div>
 
 

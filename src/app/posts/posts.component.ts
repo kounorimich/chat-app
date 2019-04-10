@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Post} from '../post';
 import {PostService} from '../post.service';
-import {not} from 'rxjs/internal-compatibility';
-import {PostEditComponent} from '../post-edit/post-edit.component';
 
 
 @Component({
@@ -13,8 +11,7 @@ import {PostEditComponent} from '../post-edit/post-edit.component';
 
 export class PostsComponent implements OnInit {
   posts: Post[];
-  result = '';
-  selectedPosts: Post[];
+  newMessageBody = '';
 
   constructor(
     private postService: PostService,
@@ -22,40 +19,35 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPosts();
+    // this.getPosts();
+    this.getPostsFromLocal();
   }
-
   getPosts(): void {
     this.postService.getPosts()
       .subscribe(posts => this.posts = posts);
   }
 
-  getNumberOfPosts(): number {
-    return this.posts.length;
-  }
-
   genId(posts: Post[]): number {
-    return this.getNumberOfPosts() > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 11;
+    return this.posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 11;
   }
 
   submit(body: string): void {
-    if (!body) {
-      return;
-    }
-
     const newPost = new Post();
     newPost.body = body;
     newPost.id = this.genId(this.posts);
     newPost.selected = false;
-    this.postService.submitPost(newPost) // ( {body} as Post)
+    this.postService.submitPost(newPost)
       .subscribe(post => {
-        this.posts.push(post);
+        this.posts.push(post); this.savePostsToLocal();
       });
-    this.result = '';
+    console.log('this.posts.length: ' + this.posts.length);
+    this.newMessageBody = '';
+    console.log('newPost: ' + newPost.body);
+    console.log('this.posts: ' + this.posts);
   }
 
   onResult(text: string) {
-    this.result = text;
+    this.newMessageBody = text;
   }
 
   // addToSelectedPosts(post: Post) {
@@ -73,8 +65,19 @@ export class PostsComponent implements OnInit {
       if (post.selected) {
         this.posts = this.posts.filter(p => p !== post); // 引数のpostオブジェクトでないものだけを、postsとして再定義
         this.postService.deletePost(post).subscribe();
-        alert(`deleted Message: ${post.body}`);
+        // alert(`deleted Message: ${post.body}`);
       }
+    }
+    this.savePostsToLocal();
+  }
+  savePostsToLocal(): void {
+    localStorage.setItem('PostObjectList', JSON.stringify(this.posts));
+    console.log('setItem実行直後のlocalStorage.getItemの返り値：' + JSON.parse(localStorage.getItem('PostObjectList')));
+  }
+  getPostsFromLocal(): void {
+    console.log('getPostsFromLocal実行時のlocalStorage.getItemの返り値：' + JSON.parse(localStorage.getItem('PostObjectList')))
+    if (localStorage.length >= 1) {
+      this.posts = JSON.parse(localStorage.getItem('PostObjectList'));
     }
   }
 }
