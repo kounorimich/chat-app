@@ -1,22 +1,21 @@
-<div class="modal-dialog modal-sm">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Write new message</h4>
-      <!-- 閉じるボタン : モーダルを閉じる -->
-      <button type="button" class="close pull-right" (click)="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <!-- テキストを入力させる欄 -->
-      <input appFocusDirective #inputElement type="text" [(ngModel)]="text">
-    </div>
+<button type="button" class="btn btn-primary" (click)="openModal(template)">New Message</button>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Write New Message</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input style="width: 100%" appFocusDirective #inputElement type="text" [(ngModel)]="text">
     <div class="modal-footer">
       <div class="text-right">
-        <!-- OK ボタンを押すとモーダルを閉じながら入力したテキストを親コンポーネントに送信する -->
-        <button [disabled]="!inputElement.value" type="submit" class="btn btn-success" (click)="onOk(); inputElement.value='';">Submit</button>
-        <button type="button" class="btn btn-warning" (click)="closeModal()">Cancel</button>
+        <button [disabled]="!inputElement.value" type="submit" class="btn btn-success"
+                (click)="onOk(); inputElement.value='';">Submit
+        </button>
+        <button type="button" class="btn btn-warning" (click)="modalRef.hide()">Cancel</button>
       </div>
     </div>
   </div>
-</div>
-
+</ng-template>

@@ -44,11 +44,5 @@ export class PostService {
     const url = `${this.postsUrl}/${id}`;
     return this.http.delete<Post>(url, httpOptions);
   }
-  // saveToLocalStorage(id: number, value: string): void {
-  //   localStorage.setItem(id as unknown as string, 'これはlocalStorageに保存したメッセージです！');
-  // }
-  saveToLocalStorage(): void {
-    localStorage.setItem('testKey', 'testValue');
-  }
 }
 

@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, ElementRef, Input } from '@angular/core';
+import {AfterContentInit, Directive, ElementRef, Input} from '@angular/core';
 
 @Directive({
   selector: '[appFocusDirective]'

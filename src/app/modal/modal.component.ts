@@ -1,40 +1,27 @@
-import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
-import {BsModalService, BsModalRef} from 'ngx-bootstrap';
+import {Component, TemplateRef} from '@angular/core';
+import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
+import {PostsComponent} from '../posts/posts.component';
 
-
-/** モーダルコンポーネント */
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent {
-  /** モーダルディレクティブを保持する */
   modalRef: BsModalRef;
-  constructor(private modalService: BsModalService) {}
+  text: string;
 
-  @Input()
-  modal: any;
-
-  /** モーダルが閉じられた時のイベント */
-  @Output()
-  close: EventEmitter<string> = new EventEmitter<string>();
-
-  /** 入力値を保持しておくプロパティ */
-  text = '';
+  constructor(private modalService: BsModalService,
+              private  postComponent: PostsComponent) {
+  }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
 
-  /** OK ボタン押下時は (close) イベントを発火させつつモーダルを閉じる */
   onOk(): void {
-    this.close.emit(this.text);  // 入力されたテキストを渡す
-    this.modal.hide();
-  }
-
-  /** No ボタンや「×」ボタンなど : ただモーダルを閉じるだけ */
-  closeModal(): void {
-    this.modal.hide();
+    this.postComponent.onResult(this.text);  // 入力されたテキストを渡す
+    this.modalRef.hide();
+    this.text = '';
   }
 }

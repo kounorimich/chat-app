@@ -22,10 +22,6 @@ export class PostsComponent implements OnInit {
     // this.getPosts();
     this.getPostsFromLocal();
   }
-  getPosts(): void {
-    this.postService.getPosts()
-      .subscribe(posts => this.posts = posts);
-  }
 
   genId(posts: Post[]): number {
     return this.posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 11;
@@ -38,7 +34,8 @@ export class PostsComponent implements OnInit {
     newPost.selected = false;
     this.postService.submitPost(newPost)
       .subscribe(post => {
-        this.posts.push(post); this.savePostsToLocal();
+        this.posts.push(post);
+        this.savePostsToLocal();
       });
     console.log('this.posts.length: ' + this.posts.length);
     this.newMessageBody = '';
@@ -48,11 +45,8 @@ export class PostsComponent implements OnInit {
 
   onResult(text: string) {
     this.newMessageBody = text;
+    this.submit(text);
   }
-
-  // addToSelectedPosts(post: Post) {
-  //  this.selectedPosts.push(post);
-  // }
 
   selectAll(): void {
     for (const post of this.posts) {
@@ -70,12 +64,14 @@ export class PostsComponent implements OnInit {
     }
     this.savePostsToLocal();
   }
+
   savePostsToLocal(): void {
     localStorage.setItem('PostObjectList', JSON.stringify(this.posts));
     console.log('setItem実行直後のlocalStorage.getItemの返り値：' + JSON.parse(localStorage.getItem('PostObjectList')));
   }
+
   getPostsFromLocal(): void {
-    console.log('getPostsFromLocal実行時のlocalStorage.getItemの返り値：' + JSON.parse(localStorage.getItem('PostObjectList')))
+    console.log('getPostsFromLocal実行時のlocalStorage.getItemの返り値：' + JSON.parse(localStorage.getItem('PostObjectList')));
     if (localStorage.length >= 1) {
       this.posts = JSON.parse(localStorage.getItem('PostObjectList'));
     }
