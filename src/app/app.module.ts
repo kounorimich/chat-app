@@ -13,6 +13,7 @@ import {FormsModule} from '@angular/forms';
 import {ButtonsModule, ModalModule, PopoverModule} from 'ngx-bootstrap';
 import {ModalComponent} from './modal/modal.component';
 import {FocusDirective} from './focus.directive';
+import {PostService} from './post.service';
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import {FocusDirective} from './focus.directive';
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
   ],
-  providers: [],
+  providers: [PostService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

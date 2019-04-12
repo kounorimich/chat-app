@@ -1,48 +1,51 @@
 import {Injectable} from '@angular/core';
 import {Post} from './post';
-import {Observable, of} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 
-const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
 
 @Injectable({
   providedIn: 'root'
 })
 
+
 export class PostService {
-  private postsUrl = 'api/posts';
+  constructor() {}
 
-  constructor(
-    private http: HttpClient,
-  ) {
+  getPostsFromLocal(): Post[] {
+    const posts: Post[] = [];
+    const keys: number[] = [];
+    for (let i = 0; i < (localStorage.length); i++) { // いったん、ローカルストレージのキーを取り出して昇順にソート
+      const numberizedKey: number = localStorage.key(i) as unknown as number;
+      keys.push(numberizedKey);
+      keys.sort((a, b) => a - b);
+      console.log(keys);
+    }
+    for (const i of keys) { // 昇順にソートした配列でローカルストレージの値を取得
+        const key = `${i}`;
+        const post = JSON.parse((localStorage.getItem(key)));
+        if (!isNaN(post.id)) {
+          posts.push(post);
+        }
+      }
+    return posts;
   }
 
-  getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(this.postsUrl);
+
+  getPost(id: string): Post {
+    let post = new Post();
+    post = JSON.parse(localStorage.getItem(`${id}`));
+    return post;
   }
 
-  getPost(id: number): Observable<Post> {
-    const url = `${this.postsUrl}/${id}`; // 求めたいpostのIDを含んだURLを生成
-    console.log('サービスファイルのgetPost:' + this.http.get<Post>(url));
-    return this.http.get<Post>(url);
-    // return of(POSTS.find(post => post.id === id));
+  updatePost(post: Post): void {
+    localStorage.setItem(`${post.id}`, JSON.stringify(post));
   }
 
-  updatePost(post: Post): Observable<any> {
-    return this.http.put(this.postsUrl, post, httpOptions);
+  submitPost(post): void {
+    localStorage.setItem(`${post.id}`, JSON.stringify(post));
+    console.log('submitPost実行！ post.id :    ' + post.id + post.body);
   }
 
-  submitPost(post: Post): Observable<Post> {
-    return this.http.post<Post>(this.postsUrl, post, httpOptions);
-    // this.saveToLocalStorage();
-  }
-
-  deletePost(post: Post | number): Observable<Post> {
-    const id = typeof post === 'number' ? post : post.id;
-    const url = `${this.postsUrl}/${id}`;
-    return this.http.delete<Post>(url, httpOptions);
+  deletePost(post): void {
+    localStorage.removeItem(`${post.id}`);
   }
 }
-

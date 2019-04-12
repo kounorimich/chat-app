@@ -19,12 +19,18 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getPosts();
-    this.getPostsFromLocal();
-  }
+    // setTimeout(() => this.getPosts(), 5000);
+    this.getPosts();
+    // this.jumpToBottom();
+    }
 
   genId(posts: Post[]): number {
-    return this.posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 11;
+    if (this.posts.length === 0) {
+      return 1;
+    } else {
+      return Math.max(...posts.map(post => post.id)) + 1;
+    }
+    // return this.posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 11;
   }
 
   submit(body: string): void {
@@ -32,15 +38,15 @@ export class PostsComponent implements OnInit {
     newPost.body = body;
     newPost.id = this.genId(this.posts);
     newPost.selected = false;
-    this.postService.submitPost(newPost)
-      .subscribe(post => {
-        this.posts.push(post);
-        this.savePostsToLocal();
-      });
-    console.log('this.posts.length: ' + this.posts.length);
+    console.log(`${newPost.body}をSubmitします`)
+    this.postService.submitPost(newPost);
+    if (this.posts == null) {
+      this.posts = [newPost];
+    } else {
+      this.posts.push(newPost);
+      }
     this.newMessageBody = '';
-    console.log('newPost: ' + newPost.body);
-    console.log('this.posts: ' + this.posts);
+    this.getPosts();
   }
 
   onResult(text: string) {
@@ -57,23 +63,27 @@ export class PostsComponent implements OnInit {
   deleteSelected(): void {
     for (const post of this.posts) {
       if (post.selected) {
-        this.posts = this.posts.filter(p => p !== post); // 引数のpostオブジェクトでないものだけを、postsとして再定義
-        this.postService.deletePost(post).subscribe();
-        // alert(`deleted Message: ${post.body}`);
+        this.postService.deletePost(post);
       }
     }
-    this.savePostsToLocal();
+    this.getPosts();
   }
 
-  savePostsToLocal(): void {
-    localStorage.setItem('PostObjectList', JSON.stringify(this.posts));
-    console.log('setItem実行直後のlocalStorage.getItemの返り値：' + JSON.parse(localStorage.getItem('PostObjectList')));
+  getPosts(): void {
+    this.posts = this.postService.getPostsFromLocal();
   }
 
-  getPostsFromLocal(): void {
-    console.log('getPostsFromLocal実行時のlocalStorage.getItemの返り値：' + JSON.parse(localStorage.getItem('PostObjectList')));
-    if (localStorage.length >= 1) {
-      this.posts = JSON.parse(localStorage.getItem('PostObjectList'));
-    }
+  jumpToBottom(): void {
+    const a = document.documentElement;
+    const y = a.scrollHeight - a.clientHeight;
+    window.scroll(0, y);
   }
+
+  // testAdd(): void {
+  //   localStorage.setItem('111', '{"selected":false,"body":"testAdd1","id":111}');
+  //   localStorage.setItem('222', '{"selected":false,"body":"testAdd2","id":222}');
+  //   localStorage.setItem('333', '{"selected":false,"body":"testAdd2","id":333}');
+  //   localStorage.setItem('444', '{"selected":false,"body":"testAdd2","id":444}');
+  //   this.getPosts();
+  // }
 }

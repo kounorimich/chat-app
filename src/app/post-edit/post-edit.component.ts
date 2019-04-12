@@ -13,8 +13,6 @@ import {PostService} from '../post.service';
 })
 export class PostEditComponent implements OnInit {
   post: Post;
-  posts: Post[];
-  result = '';
 
   constructor(private  route: ActivatedRoute,
               private postService: PostService,
@@ -24,36 +22,23 @@ export class PostEditComponent implements OnInit {
 
   ngOnInit() {
     this.getPost();
-    this.getPosts();
   }
 
   getPost(): void {
-    // console.log('test');
-    // console.log(this.route.snapshot.paramMap.get('id'));
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.postService.getPost(id)
-      .subscribe(post => {
-        console.log('post-editコンポーネント：' + post.id + post.body);
-        this.post = post;
-      });
-  }
-
-  getPosts(): void {
-    this.postService.getPosts().subscribe(posts => this.posts = posts);
+    const id = this.route.snapshot.paramMap.get('id');
+    this.post = this.postService.getPost(id);
   }
 
   goBack(): void {
     this.location.back();
   }
 
-  save(): void {
-    this.postService.updatePost(this.post)
-      .subscribe(() => this.goBack());
+  update(post: Post): void {
+    this.postService.updatePost(post);
   }
 
   delete(post: Post): void {
-    this.posts = this.posts.filter(p => p !== post); // 引数のpostオブジェクトでないものだけを、postsとして再定義
-    this.postService.deletePost(post).subscribe();
-    alert(`deleted Message: ${post.body}`);
+    this.postService.deletePost(post);
+    this.goBack();
   }
 }

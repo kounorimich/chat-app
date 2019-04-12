@@ -3,8 +3,8 @@
   <p>id: {{ post.id }}
     <br>
     <input [(ngModel)]="post.body" placeholder="Write new message here"></p>
-  <button (click)="save()" class="btn btn-primary">save</button>
-  <button (click)="delete(post); goBack()" class="btn btn-danger">delete</button>
+  <button (click)="update(post)" class="btn btn-primary">save</button>
+  <button (click)="delete(post)" class="btn btn-danger">delete</button>
   <br>
   <br>
 

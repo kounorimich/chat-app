@@ -1,23 +1,27 @@
-<div *ngIf="!posts">
-  No message yet.
+<div *ngIf="posts == null"><h1>posts == null</h1></div>
+<div *ngIf="posts.length === 0">
+  <h2>No message.</h2>
 </div>
-<div *ngIf="posts">
-  <div class="posted-messages">
-    <ul class="posts" style="padding-top: 10px">
+<!--<div *ngIf="localStorageIsNull()">-->
+
+<!--</div>-->
+<div *ngIf="posts.length >= 1">
+<div class="posted-messages">
+    <ul class="posts container-fluid" style="padding-top: 10px">
       <button (click)="selectAll()">Select All</button>
       <button (click)="deleteSelected()">Delete Selected Message</button>
       <br><br>
       <li *ngFor="let post of posts">
-        <div class="each-message well">
+        <div class="each-message well" id="{{post.id}}">
           <div class="checkbox">
             <label>
               <input type="checkbox" [(ngModel)]="post.selected">
             </label>
           </div>
           <div class="each-message-body text-left">
-            {{ post.body }}
+            {{ post.body }}   <br>(id: {{post.id}})
           </div>
-          <div class="">
+          <div class="edit-btn text-right">
             <button class="btn btn-group" routerLink="/edit/{{ post.id }}">EDIT</button>
           </div>
         </div>
@@ -27,8 +31,8 @@
 </div>
 <div class=''>
 </div>
-<div class="navbar-fixed-bottom text-center" style="padding-bottom: 150px">
-  <app-modal></app-modal>
+<div class="text-center" style="padding-bottom: 100px">
+  <app-modal (close)="jumpToBottom()"></app-modal>
 </div>
 
 

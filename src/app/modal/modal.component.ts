@@ -12,7 +12,7 @@ export class ModalComponent {
   text: string;
 
   constructor(private modalService: BsModalService,
-              private  postComponent: PostsComponent) {
+              private postComponent: PostsComponent) {
   }
 
   openModal(template: TemplateRef<any>) {

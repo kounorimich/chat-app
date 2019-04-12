@@ -12,7 +12,8 @@
     <div class="modal-footer">
       <div class="text-right">
         <button [disabled]="!inputElement.value" type="submit" class="btn btn-success"
-                (click)="onOk(); inputElement.value='';">Submit
+                (click)="onOk(); inputElement.value='';">
+          Submit
         </button>
         <button type="button" class="btn btn-warning" (click)="modalRef.hide()">Cancel</button>
       </div>
